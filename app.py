@@ -6,6 +6,13 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from io import BytesIO
 
+uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsb"])
+
+if uploaded_file is not None:
+    # Read Excel Binary format properly
+    df = pd.read_excel(uploaded_file, engine="pyxlsb")
+    st.write(df.head())
+
 import streamlit as st
 import pandas as pd
 
@@ -114,5 +121,6 @@ elif menu == "📁 Results":
         st.download_button("📥 Download Clustered CSV", b64, "clustered_result.csv", "text/csv")
     else:
         st.warning("No clustered data available. Perform clustering first.")
+
 
 
