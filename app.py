@@ -5,6 +5,17 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from io import BytesIO
+import streamlit as st
+
+uploaded_file = st.file_uploader("Upload a CSV")
+
+if uploaded_file is not None:
+    try:
+        df = pd.read_csv(uploaded_file, encoding="utf-8")
+    except UnicodeDecodeError:
+        df = pd.read_csv(uploaded_file, encoding="latin-1")  # fallback
+    st.dataframe(df)
+
 
 st.set_page_config(page_title="Customer Segmentation App", layout="wide")
 
@@ -103,3 +114,4 @@ elif menu == "📁 Results":
         st.download_button("📥 Download Clustered CSV", b64, "clustered_result.csv", "text/csv")
     else:
         st.warning("No clustered data available. Perform clustering first.")
+
